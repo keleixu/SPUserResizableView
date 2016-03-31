@@ -19,17 +19,6 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerLeftAnchorPoint = 
 static SPUserResizableViewAnchorPoint SPUserResizableViewUpperRightAnchorPoint = { 0.0, 1.0, -1.0, -1.0 };
 static SPUserResizableViewAnchorPoint SPUserResizableViewLowerRightAnchorPoint = { 0.0, 0.0, 1.0, -1.0 };
 
-@interface SPGripViewBorderView : UIView
-
-@property (nonatomic) float resizableInset;
-@property (nonatomic) float interactiveBorderSize;
-@property (nonatomic,strong) UIImageView* topLeftAnchor;
-@property (nonatomic,strong) UIImageView* topRightAnchor;
-@property (nonatomic,strong) UIImageView* bottomLeftAnchor;
-@property (nonatomic,strong) UIImageView* bottomRightAnchor;
-
-@end
-
 @implementation SPGripViewBorderView
 
 - (id)initWithFrame:(CGRect)frame {
@@ -69,28 +58,28 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerRightAnchorPoint =
     CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
     
     /*if (!self.topLeftAnchor) {
-        self.topLeftAnchor = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cropper-top-left"]];
-        [self addSubview:self.topLeftAnchor];
-    }
-    self.topLeftAnchor.frame = upperLeft;
-    
-    if (!self.topRightAnchor) {
-        self.topRightAnchor = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cropper-top-right"]];
-        [self addSubview:self.topRightAnchor];
-    }
-    self.topRightAnchor.frame = upperRight;
-    
-    if (!self.bottomLeftAnchor) {
-        self.bottomLeftAnchor = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cropper-bottom-left"]];
-        [self addSubview:self.bottomLeftAnchor];
-    }
-    self.bottomLeftAnchor.frame = lowerLeft;
-    
-    if (!self.bottomRightAnchor) {
-        self.bottomRightAnchor = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cropper-bottom-right"]];
-        [self addSubview:self.bottomRightAnchor];
-    }
-    self.bottomRightAnchor.frame = lowerRight;*/
+     self.topLeftAnchor = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cropper-top-left"]];
+     [self addSubview:self.topLeftAnchor];
+     }
+     self.topLeftAnchor.frame = upperLeft;
+     
+     if (!self.topRightAnchor) {
+     self.topRightAnchor = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cropper-top-right"]];
+     [self addSubview:self.topRightAnchor];
+     }
+     self.topRightAnchor.frame = upperRight;
+     
+     if (!self.bottomLeftAnchor) {
+     self.bottomLeftAnchor = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cropper-bottom-left"]];
+     [self addSubview:self.bottomLeftAnchor];
+     }
+     self.bottomLeftAnchor.frame = lowerLeft;
+     
+     if (!self.bottomRightAnchor) {
+     self.bottomRightAnchor = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cropper-bottom-right"]];
+     [self addSubview:self.bottomRightAnchor];
+     }
+     self.bottomRightAnchor.frame = lowerRight;*/
     
     CGGradientRelease(gradient), gradient = NULL;
     CGContextRestoreGState(context);
@@ -147,10 +136,10 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerRightAnchorPoint =
 - (void)setupDefaultAttributes {
     
     // craete border view
-    borderView = [[SPGripViewBorderView alloc] initWithFrame:CGRectInset(self.bounds, [self resizableInset], [self resizableInset])];
-    [borderView setHidden:YES];
+    _borderView = [[SPGripViewBorderView alloc] initWithFrame:CGRectInset(self.bounds, [self resizableInset], [self resizableInset])];
+    [_borderView setHidden:YES];
     
-    [self addSubview:borderView];
+    [self addSubview:_borderView];
     
     // setup
     self.minWidth = kSPUserResizableViewDefaultMinWidth;
@@ -188,14 +177,14 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerRightAnchorPoint =
 // we need to update also border view
 - (void)setResizableInset:(float)resizableInset {
     _resizableInset     = resizableInset;
-    [borderView setResizableInset:resizableInset];
+    [_borderView setResizableInset:resizableInset];
     
     [self setFrame:[self frame]];
 }
 
 - (void)setInteractiveBorderSize:(float)interactiveBorderSize {
     _interactiveBorderSize  = interactiveBorderSize;
-    [borderView setInteractiveBorderSize:interactiveBorderSize];
+    [_borderView setInteractiveBorderSize:interactiveBorderSize];
     
     [self setFrame:[self frame]];
 }
@@ -209,8 +198,8 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerRightAnchorPoint =
     [self addSubview:contentView];
     
     // Ensure the border view is always on top by removing it and adding it to the end of the subview list.
-    [borderView removeFromSuperview];
-    [self addSubview:borderView];
+    [_borderView removeFromSuperview];
+    [self addSubview:_borderView];
     [self setFrame:[self frame]];
 }
 
@@ -219,8 +208,8 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerRightAnchorPoint =
     
     if (contentView) {
         contentView.frame = CGRectInset(self.bounds, [self resizableInset] + [self interactiveBorderSize]/2, [self resizableInset] + [self interactiveBorderSize]/2);
-        borderView.frame = CGRectInset(self.bounds, [self resizableInset], [self resizableInset]);
-        [borderView setNeedsDisplay];
+        _borderView.frame = CGRectInset(self.bounds, [self resizableInset], [self resizableInset]);
+        [_borderView setNeedsDisplay];
     }
 }
 
@@ -238,11 +227,11 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerRightAnchorPoint =
 }
 
 - (void)showEditingHandles {
-    [borderView setHidden:NO];
+    [_borderView setHidden:NO];
 }
 
 - (void)hideEditingHandles {
-    [borderView setHidden:YES];
+    [_borderView setHidden:YES];
 }
 
 #pragma mark - Resize

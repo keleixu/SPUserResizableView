@@ -28,8 +28,18 @@ typedef struct SPUserResizableViewAnchorPoint {
 @protocol SPUserResizableViewDelegate;
 @class SPGripViewBorderView;
 
+@interface SPGripViewBorderView : UIView
+
+@property (nonatomic) float resizableInset;
+@property (nonatomic) float interactiveBorderSize;
+@property (nonatomic,strong) UIImageView* topLeftAnchor;
+@property (nonatomic,strong) UIImageView* topRightAnchor;
+@property (nonatomic,strong) UIImageView* bottomLeftAnchor;
+@property (nonatomic,strong) UIImageView* bottomRightAnchor;
+
+@end
+
 @interface SPUserResizableView : UIView {
-    SPGripViewBorderView *borderView;
     UIView *__weak contentView;
     CGPoint touchStart;
     CGFloat minWidth;
@@ -57,6 +67,8 @@ typedef struct SPUserResizableViewAnchorPoint {
  *  Will be retained as a subview.
  */
 @property (nonatomic, weak) UIView *contentView;
+
+@property (nonatomic, strong) SPGripViewBorderView *borderView;
 
 #pragma mark - Setup properties
 /**
