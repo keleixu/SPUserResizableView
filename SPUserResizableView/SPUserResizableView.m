@@ -57,7 +57,7 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerRightAnchorPoint =
     CGContextSetShadow(context, CGSizeMake(0.5, 0.5), 1);
     CGContextSetStrokeColorWithColor(context, [UIColor whiteColor].CGColor);
     
-    /*if (!self.topLeftAnchor) {
+    if (!self.topLeftAnchor) {
      self.topLeftAnchor = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cropper-top-left"]];
      [self addSubview:self.topLeftAnchor];
      }
@@ -79,7 +79,7 @@ static SPUserResizableViewAnchorPoint SPUserResizableViewLowerRightAnchorPoint =
      self.bottomRightAnchor = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"cropper-bottom-right"]];
      [self addSubview:self.bottomRightAnchor];
      }
-     self.bottomRightAnchor.frame = lowerRight;*/
+     self.bottomRightAnchor.frame = lowerRight;
     
     CGGradientRelease(gradient), gradient = NULL;
     CGContextRestoreGState(context);
